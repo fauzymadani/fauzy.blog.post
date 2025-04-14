@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Halaman Saya</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      font-family: "Georgia", serif;
+      background-color: #fdfdfd;
+      color: #222;
+    }
+
+    body {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .container {
+      flex: 1;
+      max-width: 1000px;
+      margin: auto;
+      display: flex;
+      flex-direction: column;
+      padding: 1em;
+    }
+
+    header {
+      border-bottom: 2px solid #ccc;
+      margin-bottom: 1em;
+    }
+
+    header h1 {
+      font-size: 2em;
+      margin: 0.5em 0;
+    }
+
+    nav.topnav {
+      background-color: #f3f3f3;
+      padding: 0.5em;
+      border: 1px solid #ccc;
+      margin-bottom: 0.5em;
+      display: flex;
+      flex-wrap: wrap;
+    }
+
+    nav.topnav a {
+      text-decoration: none;
+      color: #003366;
+      margin-right: 1.5em;
+      font-weight: bold;
+    }
+
+    nav.topnav a:hover {
+      text-decoration: underline;
+    }
+
+    .sidebar-toggle {
+      display: block;
+      background-color: #eaeaea;
+      color: #003366;
+      border: 1px solid #ccc;
+      padding: 0.3em 0.6em;
+      font-size: 0.9em;
+      margin-bottom: 1em;
+      cursor: pointer;
+    }
+
+    .content-wrapper {
+      display: flex;
+      flex: 1;
+      position: relative;
+      overflow: hidden;
+    }
+
+    aside {
+      width: 220px;
+      padding-right: 1em;
+      border-right: 1px solid #ccc;
+      transition: transform 0.3s ease, opacity 0.3s ease;
+      transform: translateX(0);
+      opacity: 1;
+      flex-shrink: 0;
+    }
+
+    aside.collapsed {
+      transform: translateX(-100%);
+      opacity: 0;
+    }
+
+    aside h3 {
+      font-size: 1.1em;
+      margin-top: 0;
+    }
+
+    aside ul {
+      list-style: none;
+      padding-left: 0;
+    }
+
+    aside ul li {
+      margin-bottom: 0.5em;
+    }
+
+    aside ul li a {
+      text-decoration: none;
+      color: #444;
+    }
+
+    aside ul li a:hover {
+      text-decoration: underline;
+    }
+
+    main {
+      flex: 1;
+      padding-left: 2em;
+      transition: padding-left 0.3s ease;
+    }
+
+    section {
+      display: none;
+    }
+
+    section.active {
+      display: block;
+    }
+
+    footer {
+      border-top: 1px solid #ccc;
+      padding-top: 1em;
+      font-size: 0.9em;
+      color: #555;
+      text-align: center;
+      margin-top: 2em;
+    }
+
+    @media (max-width: 768px) {
+      .content-wrapper {
+        flex-direction: column;
+      }
+
+      aside {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #ccc;
+        transform: translateX(0) !important;
+        opacity: 1 !important;
+      }
+
+      aside.collapsed {
+        display: none;
+      }
+
+      main {
+        padding-left: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>Halaman Saya</h1>
+      <nav class="topnav">
+        <a href="/tentang" data-link>Tentang</a>
+        <a href="/proyek" data-link>Proyek</a>
+        <a href="/kontak" data-link>Kontak</a>
+      </nav>
+      <button class="sidebar-toggle" id="sidebar-toggle">Tampilkan/Sembunyikan Sidebar</button>
+    </header>
+
+    <div class="content-wrapper">
+      <aside id="sidebar">
+        <h3>Catatan Terbaru</h3>
+        <ul>
+          <li><a href="#">Zathura: Tema Gelap yang Nyaman</a></li>
+          <li><a href="#">Membuat Peacefox: userChrome.css Retro</a></li>
+          <li><a href="#">Mengintegrasi DWM dengan NsCDE</a></li>
+          <li><a href="#">Menjaga Tampilan Sederhana di Web</a></li>
+        </ul>
+      </aside>
+
+      <main>
+        <section id="tentang" class="active">
+          <h2>Tentang Saya</h2>
+          <p>Saya adalah pengguna Linux yang suka hal klasik, terminal, dan desain minimal. Saya senang mengoprek window manager dan membuat konfigurasi yang fungsional namun tetap bergaya.</p>
+          <p>Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi hal-hal yang menurut saya menarik.</p>
+        </section>
+
+        <section id="proyek">
+          <h2>Proyek</h2>
+          <ul>
+            <li><strong>Peacefox</strong> – userChrome.css bertema retro ala CDE</li>
+            <li><strong>Zathura Dark</strong> – konfigurasi Zathura agar pakai tema gelap elegan</li>
+            <li><strong>DWM + NsCDE</strong> – integrasi dwm dengan tema NsCDE tanpa mengorbankan gaya</li>
+          </ul>
+        </section>
+
+        <section id="kontak">
+          <h2>Kontak</h2>
+          <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
+          <p>GitHub: <a href="https://github.com/username">username</a></p>
+          <p>Blog: <a href="https://your-blog.example">your-blog.example</a></p>
+        </section>
+      </main>
+    </div>
+
+    <footer>
+      <p>&copy; 2025 Halaman Saya. Dibuat dengan ♥ dan HTML polos.</p>
+    </footer>
+  </div>
+
+  <script>
+    const routes = {
+      "/tentang": "tentang",
+      "/proyek": "proyek",
+      "/kontak": "kontak"
+    };
+
+    function navigate(path) {
+      const target = routes[path] || "tentang";
+      document.querySelectorAll("main section").forEach(sec => {
+        sec.classList.remove("active");
+      });
+      document.getElementById(target).classList.add("active");
+      history.pushState({ path }, "", path);
+    }
+
+    document.querySelectorAll("a[data-link]").forEach(link => {
+      link.addEventListener("click", e => {
+        e.preventDefault();
+        const path = link.getAttribute("href");
+        navigate(path);
+      });
+    });
+
+    window.addEventListener("popstate", e => {
+      const path = e.state?.path || "/tentang";
+      navigate(path);
+    });
+
+    // Sidebar toggle logic
+    const sidebarToggle = document.getElementById("sidebar-toggle");
+    const sidebar = document.getElementById("sidebar");
+
+    sidebarToggle.addEventListener("click", () => {
+      sidebar.classList.toggle("collapsed");
+    });
+
+    // First load
+    navigate(location.pathname);
+  </script>
+</body>
+</html>
+
