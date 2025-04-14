@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss version="2.0">
+  <channel>
+    <title>Your Site Title</title>
+    <link>https://example.com</link>
+    <description>Latest full-text posts from my personal website.</description>
+    <language>en-us</language>
+    <lastBuildDate>Mon, 14 Apr 2025 12:00:00 +0000</lastBuildDate>
+    <ttl>1800</ttl>
+
+    <item>
+      <title>Zathura: A Comfortable Dark Theme</title>
+      <link>https://example.com/blog/zathura-dark-theme</link>
+      <guid>https://example.com/blog/zathura-dark-theme</guid>
+      <pubDate>Sun, 13 Apr 2025 17:30:00 +0000</pubDate>
+      <description><![CDATA[
+        <p>If you're someone who values simplicity, speed, and control in your Linux environment, chances are you've heard of <strong>Zathura</strong>. It's a minimalist and highly customizable PDF viewer that's perfect for keyboard-driven workflows.</p>
+        <p>However, the default theme is quite bright. You can make it dark by customizing the <code>~/.config/zathura/zathurarc</code> file like so:</p>
+        <pre>
+set recolor              true
+set recolor-keephue      true
+set recolor-darkcolor    "#1e1e1e"
+set recolor-lightcolor   "#eeeeee"
+        </pre>
+        <p>This configuration creates a much more eye-friendly setup when reading documents at night.</p>
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Creating Custom malloc in C</title>
+      <link>https://example.com/blog/custom-malloc-c</link>
+      <guid>https://example.com/blog/custom-malloc-c</guid>
+      <pubDate>Sat, 12 Apr 2025 13:45:00 +0000</pubDate>
+      <description><![CDATA[
+        <p>In low-level systems programming, it’s often useful to override or extend the behavior of standard memory allocation. This post walks through building a custom <code>malloc</code> from scratch in C.</p>
+        <p>You might start with something simple like this:</p>
+        <pre>
+void *my_malloc(size_t size) {
+    void *ptr = sbrk(size);
+    return ptr == (void*) -1 ? NULL : ptr;
+}
+        </pre>
+        <p>Then extend it with bookkeeping, alignment, and freeing logic. Full tutorial inside!</p>
+      ]]></description>
+    </item>
+
+    <item>
+      <title>Ncurses Basic</title>
+      <link>https://example.com/blog/ncurses-basic</link>
+      <guid>https://example.com/blog/ncurses-basic</guid>
+      <pubDate>Fri, 11 Apr 2025 15:10:00 +0000</pubDate>
+      <description><![CDATA[
+        <p>Ncurses is a C library for building terminal user interfaces. This post covers basic windows, keyboard handling, and a menu-like interface like <code>make menuconfig</code>.</p>
+        <pre>
+WINDOW *menu_win = newwin(height, width, starty, startx);
+keypad(menu_win, TRUE);
+mvwprintw(menu_win, 1, 2, "Your menu here...");
+        </pre>
+        <p>Includes a full example program with screenshot preview.</p>
+        <img src="https://example.com/images/ncurses-preview.png" alt="Ncurses Menuconfig Preview" />
+      ]]></description>
+    </item>
+
+  </channel>
+</rss>
+

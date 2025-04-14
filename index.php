@@ -6,6 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Halaman Saya</title>
   <link rel="stylesheet" href="css/style.css">
+  <link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
 </head>
 
 <body>
@@ -24,6 +25,7 @@
           <a href="/proyek" data-link data-i18n="nav_projects">Project</a>
           <a href="/kontak" data-link data-i18n="nav_contact">Contact</a>
           <a href="/archive" data-link data-i18n="nav_contact">Archive</a>
+          <!-- <a href="rss.xml" data-link data-i18n="nav_contact">RSS</a> -->
         </div>
         <!-- <select id="language-switcher" class="lang-select">
           <option value="id">🇮🇩 Indonesia</option>
@@ -45,6 +47,8 @@
 
       <main>
         <section id="tentang" class="active">
+          <header><strong style="font-size: 20px;"><a href="rss.xml" style="color: #444; text-decoration: none;"><img src="https://apps.disroot.org/image_proxy?url=https%3A%2F%2Fcdn4.iconfinder.com%2Fdata%2Ficons%2Fshare-solid-style%2F24%2Fshare-rss-feed-1024.png&h=6296e0fb5961985d78b96c940cf86ed7365745a1081a02803e2d88c38772de0c" alt="RSS" width="24" height="24"> RSS Feeds</a></strong></header>
+
           <h2 data-i18n="about_heading">Behind the Terminal</h2>
 
           <p data-i18n="about_text1">
@@ -78,6 +82,8 @@ PS1='\[\e[38;5;250m\]\u@\h \[\e[38;5;240m\]\w \[\e[0m\]\$ '
         </section>
 
         <section id="proyek">
+          <header><strong style="font-size: 20px;"><a href="rss.xml" style="color: #444; text-decoration: none;"><img src="assets/rss.png" alt="RSS" width="24" height="24"> RSS Feeds</a></strong></header>
+
           <h2 data-i18n="projects_heading">Projects</h2>
           <div id="project-list" class="project-listing">
             <p id="project-loading" data-i18n="loading_projects">fetching....</p>
@@ -85,6 +91,8 @@ PS1='\[\e[38;5;250m\]\u@\h \[\e[38;5;240m\]\w \[\e[0m\]\$ '
         </section>
 
         <section id="kontak">
+          <header><strong style="font-size: 20px;"><a href="rss.xml" style="color: #444; text-decoration: none;"><img src="assets/rss.png" alt="RSS" width="24" height="24"> RSS Feeds</a></strong></header>
+
           <h2 data-i18n="contact_heading">Contact</h2>
           <div class="contact-box">
             <div class="contact-label">Email:</div>
@@ -99,6 +107,7 @@ PS1='\[\e[38;5;250m\]\u@\h \[\e[38;5;240m\]\w \[\e[0m\]\$ '
         </section>
 
         <section id="archive">
+          <header><strong style="font-size: 20px;"><a href="rss.xml" style="color: #444; text-decoration: none;"><img src="assets/rss.png" alt="RSS" width="24" height="24"> RSS Feeds</a></strong></header>
           <header style="text-align:right;">
             <a href="blog/permalink.php" style="text-decoration: none; color: navy;">permalink</a>
           </header>

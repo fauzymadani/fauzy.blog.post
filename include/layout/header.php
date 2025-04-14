@@ -6,6 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 	<title><?= $title ?? 'Halaman Saya'; ?></title>
 	<link rel="stylesheet" href="style.css">
+	<link rel="alternate" type="application/rss+xml" title="RSS Feed" href="/rss.xml">
 </head>
 
 <body>
@@ -24,6 +25,7 @@
 					<a href="/proyek" data-i18n="nav_projects">Project</a>
 					<a href="/kontak" data-i18n="nav_contact">Contact</a>
 					<a href="/archive" data-i18n="nav_contact">Archive</a>
+					<!-- <a href="/rss.xml" data-i18n="nav_contact">RSS</a> -->
 				</div>
 			</nav>
 		</header>
