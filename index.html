@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html lang="id">
+
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Halaman Saya</title>
   <style>
     * {
       box-sizing: border-box;
     }
 
-    html, body {
+    html,
+    body {
       height: 100%;
       margin: 0;
       padding: 0;
@@ -195,6 +197,7 @@
     }
   </style>
 </head>
+
 <body>
   <div class="container">
     <header>
@@ -232,15 +235,16 @@
         <section id="tentang" class="active">
           <h2 data-i18n="about_heading">Tentang Saya</h2>
           <p data-i18n="about_text1">Saya adalah pengguna Linux yang suka hal klasik, terminal, dan desain minimal.</p>
-          <p data-i18n="about_text2">Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi hal-hal yang menurut saya menarik.</p>
+          <p data-i18n="about_text2">Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi
+            hal-hal yang menurut saya menarik.</p>
         </section>
 
         <section id="proyek">
-  <h2 data-i18n="projects_heading">Proyek</h2>
-  <strong>Translation not available</strong>
-  <p id="project-loading" data-i18n="loading_projects">Memuat daftar proyek dari GitHub...</p>
-  <ul id="github-projects"></ul>
-</section>
+          <h2 data-i18n="projects_heading">Proyek</h2>
+          <strong>Translation not available</strong>
+          <p id="project-loading" data-i18n="loading_projects">Memuat daftar proyek dari GitHub...</p>
+          <ul id="github-projects"></ul>
+        </section>
 
 
         <section id="kontak">
@@ -266,29 +270,29 @@
     };
 
     async function loadGitHubRepos() {
-  const username = "fauzymadani"; // ganti dengan username GitHub kamu
-  const ul = document.getElementById("github-projects");
-  ul.innerHTML = "<li>Loading...</li>";
+      const username = "fauzymadani"; // ganti dengan username GitHub kamu
+      const ul = document.getElementById("github-projects");
+      ul.innerHTML = "<li>Loading...</li>";
 
-  try {
-    const res = await fetch(`https://api.github.com/users/${username}/repos`);
-    if (!res.ok) throw new Error("Gagal memuat repo.");
-    const repos = await res.json();
+      try {
+        const res = await fetch(`https://api.github.com/users/${username}/repos`);
+        if (!res.ok) throw new Error("Gagal memuat repo.");
+        const repos = await res.json();
 
-    // Sort repos by updated date, descending
-    repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+        // Sort repos by updated date, descending
+        repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
 
-    // Kosongkan daftar dan masukkan hasil
-    ul.innerHTML = "";
-    repos.forEach(repo => {
-      const li = document.createElement("li");
-      li.innerHTML = `<a href="${repo.html_url}" target="_blank"><strong>${repo.name}</strong></a>: ${repo.description || "(tidak ada deskripsi)"}`;
-      ul.appendChild(li);
-    });
-  } catch (err) {
-    ul.innerHTML = `<li>${err.message}</li>`;
-  }
-}
+        // Kosongkan daftar dan masukkan hasil
+        ul.innerHTML = "";
+        repos.forEach(repo => {
+          const li = document.createElement("li");
+          li.innerHTML = `<a href="${repo.html_url}" target="_blank"><strong>${repo.name}</strong></a>: ${repo.description || "(tidak ada deskripsi)"}`;
+          ul.appendChild(li);
+        });
+      } catch (err) {
+        ul.innerHTML = `<li>${err.message}</li>`;
+      }
+    }
 
     const translations = {
       id: {
@@ -334,20 +338,20 @@
     };
 
     function navigate(path) {
-  const target = routes[path] || "tentang";
-  document.querySelectorAll("main section").forEach(sec => {
-    sec.classList.remove("active");
-  });
-  document.getElementById(target).classList.add("active");
+      const target = routes[path] || "tentang";
+      document.querySelectorAll("main section").forEach(sec => {
+        sec.classList.remove("active");
+      });
+      document.getElementById(target).classList.add("active");
 
-  // Muat proyek saat user ke /proyek
-  if (target === "proyek" && !document.getElementById("proyek").dataset.loaded) {
-    loadGitHubRepos();
-    document.getElementById("proyek").dataset.loaded = "true";
-  }
+      // Muat proyek saat user ke /proyek
+      if (target === "proyek" && !document.getElementById("proyek").dataset.loaded) {
+        loadGitHubRepos();
+        document.getElementById("proyek").dataset.loaded = "true";
+      }
 
-  history.pushState({ path }, "", path);
-}
+      history.pushState({path}, "", path);
+    }
 
 
     document.querySelectorAll("a[data-link]").forEach(link => {
@@ -384,5 +388,5 @@
     updateLanguage("id");
   </script>
 </body>
-</html>
 
+</html>
