@@ -14,7 +14,7 @@
       margin: 0;
       padding: 0;
       font-family: "Georgia", serif;
-      background-color: #fdfdfd;
+      background-color: #e0e0dc;
       color: #222;
     }
 
@@ -25,11 +25,16 @@
 
     .container {
       flex: 1;
-      max-width: 1000px;
-      margin: auto;
+      width: 100%;
+      max-width: 1200px;
+      margin: 2em auto;
       display: flex;
       flex-direction: column;
-      padding: 1em;
+      padding: 2em;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.15);
+      border: 1px solid #ccc;
+      border-radius: 4px;
     }
 
     header {
@@ -37,9 +42,34 @@
       margin-bottom: 1em;
     }
 
-    header h1 {
+    .header-flex {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .header-flex h1 {
       font-size: 2em;
       margin: 0.5em 0;
+    }
+
+    .search-container {
+      max-width: 300px;
+      width: 100%;
+    }
+
+    .gsc-input-box,
+    input.gsc-input {
+      background-color: #f9f9f9 !important;
+      font-family: "Courier New", monospace !important;
+      font-size: 14px !important;
+      box-shadow: none !important;
+    }
+
+    .gsc-search-button {
+      background-color: gray !important;
+      border: none !important;
     }
 
     nav.topnav {
@@ -49,12 +79,18 @@
       margin-bottom: 0.5em;
       display: flex;
       flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 1.5em;
     }
 
     nav.topnav a {
       text-decoration: none;
       color: #003366;
-      margin-right: 1.5em;
       font-weight: bold;
     }
 
@@ -62,15 +98,10 @@
       text-decoration: underline;
     }
 
-    .sidebar-toggle {
-      display: block;
-      background-color: #eaeaea;
-      color: #003366;
-      border: 1px solid #ccc;
-      padding: 0.3em 0.6em;
-      font-size: 0.9em;
-      margin-bottom: 1em;
-      cursor: pointer;
+    .lang-select {
+      font-family: inherit;
+      font-size: 0.95em;
+      padding: 0.2em 0.5em;
     }
 
     .content-wrapper {
@@ -167,44 +198,52 @@
 <body>
   <div class="container">
     <header>
-      <h1>Halaman Saya</h1>
+      <div class="header-flex">
+        <h1 data-i18n="title">Blog post</h1>
+        <div class="search-container">
+          <div class="gcse-search"></div>
+        </div>
+      </div>
       <nav class="topnav">
-        <a href="/tentang" data-link>Tentang</a>
-        <a href="/proyek" data-link>Proyek</a>
-        <a href="/kontak" data-link>Kontak</a>
+        <div class="nav-links">
+          <a href="/tentang" data-link data-i18n="nav_about">Tentang</a>
+          <a href="/proyek" data-link data-i18n="nav_projects">Proyek</a>
+          <a href="/kontak" data-link data-i18n="nav_contact">Kontak</a>
+        </div>
+        <select id="language-switcher" class="lang-select">
+          <option value="id">🇮🇩 Indonesia</option>
+          <option value="en">🇬🇧 English</option>
+        </select>
       </nav>
-      <button class="sidebar-toggle" id="sidebar-toggle">Tampilkan/Sembunyikan Sidebar</button>
     </header>
 
     <div class="content-wrapper">
       <aside id="sidebar">
-        <h3>Catatan Terbaru</h3>
+        <h3 data-i18n="latest_notes">Catatan Terbaru</h3>
         <ul>
-          <li><a href="#">Zathura: Tema Gelap yang Nyaman</a></li>
-          <li><a href="#">Membuat Peacefox: userChrome.css Retro</a></li>
-          <li><a href="#">Mengintegrasi DWM dengan NsCDE</a></li>
-          <li><a href="#">Menjaga Tampilan Sederhana di Web</a></li>
+          <li><a href="#" data-i18n="note1">Zathura: Tema Gelap yang Nyaman</a></li>
+          <li><a href="#" data-i18n="note2">Membuat Peacefox: userChrome.css Retro</a></li>
+          <li><a href="#" data-i18n="note3">Mengintegrasi DWM dengan NsCDE</a></li>
+          <li><a href="#" data-i18n="note4">Menjaga Tampilan Sederhana di Web</a></li>
         </ul>
       </aside>
 
       <main>
         <section id="tentang" class="active">
-          <h2>Tentang Saya</h2>
-          <p>Saya adalah pengguna Linux yang suka hal klasik, terminal, dan desain minimal. Saya senang mengoprek window manager dan membuat konfigurasi yang fungsional namun tetap bergaya.</p>
-          <p>Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi hal-hal yang menurut saya menarik.</p>
+          <h2 data-i18n="about_heading">Tentang Saya</h2>
+          <p data-i18n="about_text1">Saya adalah pengguna Linux yang suka hal klasik, terminal, dan desain minimal.</p>
+          <p data-i18n="about_text2">Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi hal-hal yang menurut saya menarik.</p>
         </section>
 
         <section id="proyek">
-          <h2>Proyek</h2>
-          <ul>
-            <li><strong>Peacefox</strong> – userChrome.css bertema retro ala CDE</li>
-            <li><strong>Zathura Dark</strong> – konfigurasi Zathura agar pakai tema gelap elegan</li>
-            <li><strong>DWM + NsCDE</strong> – integrasi dwm dengan tema NsCDE tanpa mengorbankan gaya</li>
-          </ul>
-        </section>
+  <h2 data-i18n="projects_heading">Proyek</h2>
+  <p id="project-loading" data-i18n="loading_projects">Memuat daftar proyek dari GitHub...</p>
+  <ul id="github-projects"></ul>
+</section>
+
 
         <section id="kontak">
-          <h2>Kontak</h2>
+          <h2 data-i18n="contact_heading">Kontak</h2>
           <p>Email: <a href="mailto:you@example.com">you@example.com</a></p>
           <p>GitHub: <a href="https://github.com/username">username</a></p>
           <p>Blog: <a href="https://your-blog.example">your-blog.example</a></p>
@@ -213,10 +252,11 @@
     </div>
 
     <footer>
-      <p>&copy; 2025 Halaman Saya. Dibuat dengan ♥ dan HTML polos.</p>
+      <p data-i18n="footer_text">&copy; 2025 Halaman Saya. Dibuat dengan ♥ dan HTML polos.</p>
     </footer>
   </div>
 
+  <script async src="https://cse.google.com/cse.js?cx=727215aa94c34467a"></script>
   <script>
     const routes = {
       "/tentang": "tentang",
@@ -224,14 +264,90 @@
       "/kontak": "kontak"
     };
 
+    async function loadGitHubRepos() {
+  const username = "fauzymadani"; // ganti dengan username GitHub kamu
+  const ul = document.getElementById("github-projects");
+  ul.innerHTML = "<li>Loading...</li>";
+
+  try {
+    const res = await fetch(`https://api.github.com/users/${username}/repos`);
+    if (!res.ok) throw new Error("Gagal memuat repo.");
+    const repos = await res.json();
+
+    // Sort repos by updated date, descending
+    repos.sort((a, b) => new Date(b.updated_at) - new Date(a.updated_at));
+
+    // Kosongkan daftar dan masukkan hasil
+    ul.innerHTML = "";
+    repos.forEach(repo => {
+      const li = document.createElement("li");
+      li.innerHTML = `<a href="${repo.html_url}" target="_blank"><strong>${repo.name}</strong></a>: ${repo.description || "(tidak ada deskripsi)"}`;
+      ul.appendChild(li);
+    });
+  } catch (err) {
+    ul.innerHTML = `<li>${err.message}</li>`;
+  }
+}
+
+    const translations = {
+      id: {
+        title: "Halaman Saya",
+        nav_about: "Tentang",
+        nav_projects: "Proyek",
+        nav_contact: "Kontak",
+        latest_notes: "Catatan Terbaru",
+        note1: "Zathura: Tema Gelap yang Nyaman",
+        note2: "Membuat Peacefox: userChrome.css Retro",
+        note3: "Mengintegrasi DWM dengan NsCDE",
+        note4: "Menjaga Tampilan Sederhana di Web",
+        about_heading: "Tentang Saya",
+        about_text1: "Saya adalah pengguna Linux yang suka hal klasik, terminal, dan desain minimal.",
+        about_text2: "Situs ini adalah tempat saya menulis, mendokumentasikan proyek pribadi, dan berbagi hal-hal yang menurut saya menarik.",
+        projects_heading: "Proyek",
+        project1: "userChrome.css bertema retro ala CDE",
+        project2: "konfigurasi Zathura agar pakai tema gelap elegan",
+        project3: "integrasi dwm dengan tema NsCDE tanpa mengorbankan gaya",
+        contact_heading: "Kontak",
+        footer_text: "&copy; 2025 Halaman Saya. Dibuat dengan ♥ dan HTML polos."
+      },
+      en: {
+        title: "My Page",
+        nav_about: "About",
+        nav_projects: "Projects",
+        nav_contact: "Contact",
+        latest_notes: "Latest Notes",
+        note1: "Zathura: A Comfortable Dark Theme",
+        note2: "Making Peacefox: Retro userChrome.css",
+        note3: "Integrating DWM with NsCDE",
+        note4: "Keeping Web Design Simple",
+        about_heading: "About Me",
+        about_text1: "I'm a Linux user who loves classic things, terminals, and minimal design.",
+        about_text2: "This site is where I write, document personal projects, and share things I find interesting.",
+        projects_heading: "Projects",
+        project1: "A retro-themed userChrome.css inspired by CDE",
+        project2: "Zathura configuration with elegant dark theme",
+        project3: "DWM + NsCDE integration without sacrificing style",
+        contact_heading: "Contact",
+        footer_text: "&copy; 2025 My Page. Made with ♥ and plain HTML."
+      }
+    };
+
     function navigate(path) {
-      const target = routes[path] || "tentang";
-      document.querySelectorAll("main section").forEach(sec => {
-        sec.classList.remove("active");
-      });
-      document.getElementById(target).classList.add("active");
-      history.pushState({ path }, "", path);
-    }
+  const target = routes[path] || "tentang";
+  document.querySelectorAll("main section").forEach(sec => {
+    sec.classList.remove("active");
+  });
+  document.getElementById(target).classList.add("active");
+
+  // Muat proyek saat user ke /proyek
+  if (target === "proyek" && !document.getElementById("proyek").dataset.loaded) {
+    loadGitHubRepos();
+    document.getElementById("proyek").dataset.loaded = "true";
+  }
+
+  history.pushState({ path }, "", path);
+}
+
 
     document.querySelectorAll("a[data-link]").forEach(link => {
       link.addEventListener("click", e => {
@@ -246,16 +362,25 @@
       navigate(path);
     });
 
-    // Sidebar toggle logic
-    const sidebarToggle = document.getElementById("sidebar-toggle");
-    const sidebar = document.getElementById("sidebar");
+    function updateLanguage(lang) {
+      const elements = document.querySelectorAll("[data-i18n]");
+      elements.forEach(el => {
+        const key = el.dataset.i18n;
+        if (translations[lang] && translations[lang][key]) {
+          el.innerHTML = translations[lang][key];
+        }
+      });
+      document.documentElement.lang = lang;
+    }
 
-    sidebarToggle.addEventListener("click", () => {
-      sidebar.classList.toggle("collapsed");
+    document.getElementById("language-switcher").addEventListener("change", e => {
+      const lang = e.target.value;
+      updateLanguage(lang);
     });
 
     // First load
     navigate(location.pathname);
+    updateLanguage("id");
   </script>
 </body>
 </html>
