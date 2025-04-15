@@ -3,7 +3,7 @@
 
 <main>
   <section id="blog" class="active">
-    <header><i>Translation not yet available</i></header>
+    <header><i>Sun 10 Apr 2025 13:02 AM</i></header>
     <h2>Zathura: A Comfortable Dark Theme</h2>
     <p>
       If you're someone who values simplicity, speed, and control in your Linux environment, chances are you've heard of <strong>Zathura</strong>. It's a minimalist and highly customizable PDF viewer that's perfect for keyboard-driven workflows.
@@ -47,6 +47,16 @@ set inputbar-fg          "#ffffff"
     <p>
       Whether you're reading academic papers, technical manuals, or even comic books, this dark theme will give you a better, more enjoyable experience with Zathura. Feel free to tweak the colors further to make it truly yours.
     </p>
+
+    <div class="inner-footer">
+      <div>
+        All content licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPL 3.0 License</a> 2024 - Fauzy
+      </div>
+      <div>
+        This site is powered by <a href="https://www.vim.org/">Vim</a>, and <a href="https://www.php.net/">php</a>
+      </div>
+    </div>
+
   </section>
 </main>
 

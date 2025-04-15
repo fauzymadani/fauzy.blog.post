@@ -22,6 +22,15 @@ https://yourdomain.com/blog/zathura.php
       Bookmark or copy any of the links above to revisit specific entries.
     </p>
   </section>
+
+  <div class="inner-footer">
+    <div>
+      All content licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPL 3.0 License</a> 2024 - Fauzy
+    </div>
+    <div>
+      This site is powered by <a href="https://www.vim.org/">Vim</a>, and <a href="https://www.php.net/">php</a>
+    </div>
+  </div>
 </main>
 
 <?php include __DIR__ . '/../include/layout/footer.php'; ?>

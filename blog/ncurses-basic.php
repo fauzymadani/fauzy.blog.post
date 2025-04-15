@@ -3,285 +3,202 @@
 
 <main>
     <section id="blog" class="active">
-        <header><i>Part 1</i> <a href="permalink.php">permalink</a></header>
-        <h2>Ncurses Basic: Building TUIs with C</h2>
+        <header><i><i>01-08-2024 21:09</i></i></header>
+        <h2>Building Text-Based Interfaces with <code>ncurses</code> in C</h2>
 
         <p>
-            <strong>ncurses</strong> is a powerful C library that allows developers to create text-based user interfaces (TUIs) in a terminal. It provides an API for managing input, output, windows, colors, and user interaction in terminal environments.
-            It's widely used in applications like <code>htop</code>, <code>vim</code>, and the Linux kernel's <code>menuconfig</code>.
+            The <code>ncurses</code> library provides a powerful toolkit for creating terminal-based user interfaces (TUIs) in C. It abstracts away low-level terminal handling and offers features like windows, input, colors, and layout management. TUIs are still widely used in configuration tools (e.g., <code>make menuconfig</code>), system monitors (e.g., <code>htop</code>), and CLI apps.
         </p>
 
-        <h3>1. Initializing Ncurses</h3>
         <p>
-            To start using ncurses, you must initialize the screen using <code>initscr()</code> and terminate it with <code>endwin()</code>. Here's the minimal setup:
+            This post covers the fundamentals of ncurses, including initialization, input handling, window management, colors, and building a minimal <code>menuconfig</code>-like interface.
+        </p>
+
+        <h3>1. Initializing and Ending ncurses</h3>
+        <p>
+            Every ncurses program begins by initializing the screen and ends by restoring the terminal to normal mode.
         </p>
 
         <pre>
 #include &lt;ncurses.h&gt;
 
 int main() {
-    initscr();            // Initialize screen
-    printw("Hello, ncurses!");
-    refresh();            // Refresh screen to show text
-    getch();              // Wait for user input
-    endwin();             // Clean up and return terminal to normal
+    initscr();              // Initialize ncurses
+    cbreak();               // Disable line buffering
+    noecho();               // Don't echo user input
+    keypad(stdscr, TRUE);   // Enable special keys
+
+    printw("Hello from ncurses!");
+    refresh();
+    getch();
+
+    endwin();               // Restore terminal
     return 0;
 }
     </pre>
 
-        <h3>2. Handling User Input</h3>
+        <h3>2. Creating Windows</h3>
         <p>
-            Ncurses provides input functions like <code>getch()</code> and <code>keypad()</code>. You can detect arrow keys and function keys with ease.
+            ncurses supports multiple windows. A window is a rectangular area you can draw to separately from the main screen.
+        </p>
+
+        <pre>
+WINDOW* win = newwin(10, 30, 5, 5); // height, width, y, x
+box(win, 0, 0);                     // Draw border
+mvwprintw(win, 1, 1, "Window content");
+wrefresh(win);
+getch();
+delwin(win);                       // Clean up
+    </pre>
+
+        <h3>3. Handling Keyboard Input</h3>
+        <p>
+            Use <code>getch()</code> to read input. Special keys like arrow keys are enabled with <code>keypad()</code>.
         </p>
 
         <pre>
 int ch;
-keypad(stdscr, TRUE);  // Enable special keys
 while ((ch = getch()) != 'q') {
     switch (ch) {
         case KEY_UP:
-            printw("Up key pressed\n");
+            printw("Up arrow pressed\n");
             break;
         case KEY_DOWN:
-            printw("Down key pressed\n");
+            printw("Down arrow pressed\n");
             break;
         default:
-            printw("Key code: %d\n", ch);
+            printw("Key: %d\n", ch);
     }
+    refresh();
 }
     </pre>
 
-        <h3>3. Creating Windows and Boxes</h3>
+        <h3>4. Working with Colors</h3>
         <p>
-            Windows help divide your terminal into separate sections. You can create a box around a window using <code>box()</code>.
-        </p>
-
-        <pre>
-WINDOW *win = newwin(10, 40, 5, 5);  // height, width, y, x
-box(win, 0, 0);
-mvwprintw(win, 1, 1, "Window with a box!");
-wrefresh(win);
-getch();
-delwin(win);
-    </pre>
-
-        <h3>4. Colors and Attributes</h3>
-        <p>
-            Ncurses supports colored text using <code>start_color()</code> and <code>init_pair()</code>.
+            ncurses allows colored text and background. First call <code>start_color()</code> and define color pairs.
         </p>
 
         <pre>
 start_color();
-init_pair(1, COLOR_RED, COLOR_BLACK);
+init_pair(1, COLOR_GREEN, COLOR_BLACK);
 attron(COLOR_PAIR(1));
-printw("Red text on black background\n");
+printw("This is green on black\n");
 attroff(COLOR_PAIR(1));
 refresh();
-getch();
     </pre>
 
-        <h3>5. Full Example: Kernel-like Menu</h3>
+        <h3>5. Building a Menuconfig-like UI</h3>
         <p>
-            Here's a more complex ncurses application that mimics the Linux kernel's <code>menuconfig</code>. It features nested menus, selectable items, and keyboard navigation:
+            You can simulate a kernel config UI with simple navigation and selection.
         </p>
 
         <pre>
-#include <ncurses.h>
-#include <string.h>
+#define OPTIONS 3
 
-typedef struct Menu Menu;
-
-typedef enum {
-    STATUS_EXCLUDED,
-    STATUS_BUILTIN,
-    STATUS_MODULE,
-    STATUS_ALLIN
-} MenuStatus;
-
-typedef struct MenuItem {
-    const char *label;
-    int is_submenu;
-    Menu *submenu;
-    MenuStatus status;
-} MenuItem;
-
-struct Menu {
-    const char *title;
-    MenuItem *items;
-    int num_items;
+const char* menu[OPTIONS] = {
+    "[*] Enable Feature A",
+    "[ ] Enable Feature B",
+    "[ ] Enable Feature C"
 };
 
-const char* status_symbol(MenuStatus status) {
-    switch (status) {
-        case STATUS_EXCLUDED: return "[ ]";
-        case STATUS_BUILTIN:  return "[*]";
-        case STATUS_MODULE:   return "<M>";
-        case STATUS_ALLIN:    return "<*>";
-        default: return "   ";
+int highlight = 0;
+
+void draw_menu() {
+    clear();
+    for (int i = 0; i &lt; OPTIONS; ++i) {
+        if (i == highlight)
+            attron(A_REVERSE);
+        mvprintw(i + 2, 2, menu[i]);
+        if (i == highlight)
+            attroff(A_REVERSE);
     }
-}
-
-void show_menu(Menu *menu, WINDOW *win, int max_lines) {
-    int choice = 0, ch;
-    keypad(win, TRUE);
-
-    while (1) {
-        werase(win);
-        box(win, 0, 0);
-
-        for (int i = 0; i < menu->num_items && i < max_lines - 2; i++) {
-            if (i == choice) {
-                wattron(win, COLOR_PAIR(2));
-                mvwprintw(win, 1 + i, 2, " %s %-30s %s",
-                    status_symbol(menu->items[i].status),
-                    menu->items[i].label,
-                    menu->items[i].is_submenu ? "--->" : "");
-                wattroff(win, COLOR_PAIR(2));
-            } else {
-                mvwprintw(win, 1 + i, 2, " %s %-30s %s",
-                    status_symbol(menu->items[i].status),
-                    menu->items[i].label,
-                    menu->items[i].is_submenu ? "--->" : "");
-            }
-        }
-
-        wrefresh(win);
-        ch = wgetch(win);
-
-        switch (ch) {
-            case KEY_UP:
-                choice = (choice - 1 + menu->num_items) % menu->num_items;
-                break;
-            case KEY_DOWN:
-                choice = (choice + 1) % menu->num_items;
-                break;
-            case 10: // Enter
-                if (menu->items[choice].is_submenu) {
-                    show_menu(menu->items[choice].submenu, win, max_lines);
-                } else if (strcmp(menu->items[choice].label, "Exit") == 0) {
-                    return;
-                } else {
-                    menu->items[choice].status = (menu->items[choice].status + 1) % 4;
-                }
-                break;
-            case 27: // ESC
-                return;
-        }
-    }
+    refresh();
 }
 
 int main() {
     initscr();
-    start_color();
     cbreak();
     noecho();
-    curs_set(0);
     keypad(stdscr, TRUE);
 
-    int screen_height, screen_width;
-    getmaxyx(stdscr, screen_height, screen_width);
+    int ch;
+    while (1) {
+        draw_menu();
+        ch = getch();
+        if (ch == KEY_UP) highlight = (highlight - 1 + OPTIONS) % OPTIONS;
+        else if (ch == KEY_DOWN) highlight = (highlight + 1) % OPTIONS;
+        else if (ch == ' ') {
+            menu[highlight][1] = (menu[highlight][1] == '*') ? ' ' : '*';
+        } else if (ch == 'q') break;
+    }
 
-    init_pair(1, COLOR_WHITE, COLOR_BLUE);   // Main background
-    init_pair(2, COLOR_WHITE, COLOR_BLUE);  // Highlighted menu
-    init_pair(3, COLOR_CYAN, COLOR_BLACK);   // Title
-    init_pair(4, COLOR_BLACK, COLOR_WHITE);  // Menu box
-    init_pair(5, COLOR_YELLOW, COLOR_BLUE);  // Footer
-
-    WINDOW *main_win = newwin(screen_height, screen_width, 0, 0);
-    wbkgd(main_win, COLOR_PAIR(1));
-    box(main_win, 0, 0);
-    wattron(main_win, COLOR_PAIR(3));
-    mvwprintw(main_win, 0, 2, ".config - Linux/x86 Kernel Configuration");
-    wattroff(main_win, COLOR_PAIR(3));
-
-    // Help text
-    wattron(main_win, A_BOLD);
-    mvwprintw(main_win, 1, 2, "Arrow keys navigate the menu. <Enter> selects submenus ---> (or empty submenus ----).");
-    mvwprintw(main_win, 2, 2, "Highlighted letters are hotkeys. Pressing <Y> includes, <N> excludes, <M> modularizes features.");
-    mvwprintw(main_win, 3, 2, "Press <Esc><Esc> to exit, <?> for Help, </> for Search. Legend: [*] built-in  [ ] excluded  <M> module  <*> all-in");
-    wattroff(main_win, A_BOLD);
-
-    // Menu window
-    int menu_height = screen_height - 9;
-    int menu_width = screen_width - 6;
-    int menu_starty = 5;
-    int menu_startx = 3;
-    WINDOW *menu_win = derwin(main_win, menu_height, menu_width, menu_starty, menu_startx);
-    wbkgd(menu_win, COLOR_PAIR(4));
-    box(menu_win, 0, 0);
-    wrefresh(main_win);
-
-    // Footer
-    wattron(main_win, COLOR_PAIR(5));
-    mvwprintw(main_win, screen_height - 2, 2, "<Select>  < Exit >  < Help >  < Save >  < Load >");
-    wattroff(main_win, COLOR_PAIR(5));
-    wrefresh(main_win);
-
-    // Submenu: General setup
-    MenuItem general_items[] = {
-        {"Enable module support", 0, NULL, STATUS_EXCLUDED},
-        {"Processor type", 0, NULL, STATUS_BUILTIN},
-        {"Exit", 0, NULL, STATUS_EXCLUDED},
-    };
-    Menu general_menu = {
-        "General Setup",
-        general_items,
-        sizeof(general_items) / sizeof(MenuItem)
-    };
-
-    // Main menu
-    MenuItem main_items[] = {
-        {"64-bit kernel", 0, NULL, STATUS_BUILTIN},
-        {"General setup", 1, &general_menu, STATUS_EXCLUDED},
-        {"Networking support", 0, NULL, STATUS_MODULE},
-        {"Exit", 0, NULL, STATUS_EXCLUDED},
-    };
-    Menu main_menu = {
-        "Main Menu",
-        main_items,
-        sizeof(main_items) / sizeof(MenuItem)
-    };
-
-    // Tampilkan menu
-    show_menu(&main_menu, menu_win, menu_height);
-
-    delwin(menu_win);
-    delwin(main_win);
     endwin();
     return 0;
 }
     </pre>
 
-        <h4>Preview:</h4>
+        <h3>6. Compiling ncurses Programs</h3>
         <p>
-            Below is a preview of the program output mimicking <code>make menuconfig</code>:
-        </p>
-        <img src="/assets/images/menuconfig-preview.png" alt="Ncurses Menuconfig Preview" style="border:1px solid #ccc;max-width:100%;margin:1em 0;" />
-
-        <h3>6. Tips and Best Practices</h3>
-        <ul>
-            <li>Use <code>cbreak()</code> to get characters immediately without waiting for Enter.</li>
-            <li><code>noecho()</code> prevents typed characters from being shown (useful for password prompts).</li>
-            <li>Always call <code>endwin()</code> to clean up when your program ends.</li>
-            <li>Use <code>wrefresh()</code> for windows and <code>refresh()</code> for the main screen.</li>
-        </ul>
-
-        <h3>7. Compiling Ncurses Programs</h3>
-        <p>
-            Don't forget to link against ncurses when compiling:
+            You must link the <code>ncurses</code> library using <code>-lncurses</code>.
         </p>
 
         <pre>
-gcc -o myapp myapp.c -lncurses
+gcc -o tui tui.c -lncurses
+    </pre>
+
+        <h3>7. Layout Tips and Tricks</h3>
+        <ul>
+            <li>Use <code>getmaxyx(stdscr, y, x)</code> to get terminal size.</li>
+            <li>Use <code>mvprintw(y, x, "...")</code> to position text precisely.</li>
+            <li>To center text: <code>mvprintw(y, (COLS - strlen(str)) / 2, str)</code></li>
+        </ul>
+
+        <h3>8. Mouse Support (Bonus)</h3>
+        <p>
+            ncurses supports mouse input in terminals that allow it. Enable mouse events:
+        </p>
+
+        <pre>
+#include &lt;ncurses.h&gt;
+
+int main() {
+    initscr();
+    keypad(stdscr, TRUE);
+    mousemask(ALL_MOUSE_EVENTS, NULL);
+
+    MEVENT event;
+    while (1) {
+        int ch = getch();
+        if (ch == KEY_MOUSE) {
+            if (getmouse(&event) == OK) {
+                mvprintw(0, 0, "Mouse clicked at %d,%d", event.y, event.x);
+            }
+        }
+        refresh();
+    }
+
+    endwin();
+    return 0;
+}
     </pre>
 
         <h3>Conclusion</h3>
         <p>
-            Ncurses is an essential tool in a Linux developer’s toolkit when it comes to building terminal-based applications. With it, you can create powerful, interactive, and lightweight interfaces without relying on graphical libraries. From simple forms to complex nested menus, it gives you full control over terminal I/O.
+            Ncurses is a great way to create rich interactive command-line applications. Whether you’re building a config UI or a dashboard, it offers low-level control with high-level simplicity. Mastering it can unlock a lot of power in the terminal.
         </p>
+
         <p>
-            In the next post, we’ll explore how to build forms, manage field validation, and even integrate mouse support into your TUI applications using <code>form.h</code> and <code>menu.h</code>.
+            You can explore more advanced features such as panels, forms, and menus using the extended ncurses libraries.
         </p>
+
+        <div class="inner-footer">
+            <div>
+                All content licensed under <a href="https://www.gnu.org/licenses/gpl-3.0.en.html">GPL 3.0 License</a> 2024 - Fauzy
+            </div>
+            <div>
+                This site is powered by <a href="https://www.vim.org/">Vim</a>, and <a href="https://www.php.net/">php</a>
+            </div>
+        </div>
     </section>
 </main>
 

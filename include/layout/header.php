@@ -13,7 +13,7 @@
 	<div class="container">
 		<header>
 			<div class="header-flex">
-				<h1 data-i18n="title">Blog post</h1>
+				<h1 data-i18n="title">fauzy.blog.post</h1>
 				<div class="search-container">
 					<div class="gcse-search"></div>
 				</div>
@@ -25,7 +25,7 @@
 					<a href="/proyek" data-i18n="nav_projects">Project</a>
 					<a href="/kontak" data-i18n="nav_contact">Contact</a>
 					<a href="/archive" data-i18n="nav_contact">Archive</a>
-					<!-- <a href="/rss.xml" data-i18n="nav_contact">RSS</a> -->
+					<a href="https://github.com/fauzymadani">Source Code</a>
 				</div>
 			</nav>
 		</header>
